@@ -5,10 +5,21 @@
 #include <string>
 #include <iostream>
 #include <utility> 
+#include <string>
 
 using namespace std;
 
-// #define T_PRODUCTIONS std::unordered_map<std::string, std::string>
+// struct pair_hash {
+//     template <typename T1, typename T2>
+//     std::size_t operator() (const std::pair<T1, T2>& p) const {
+//         auto h1 = std::hash<T1>{}(p.first);
+//         auto h2 = std::hash<T2>{}(p.second);
+//         return h1 ^ h2;
+//     }
+// };
+
+// #define T_PRODUCTIONS std::unordered_map<std::pair<char, char>, std::string, pair_hash>
+// #define T_PAIR pair<char, char>
 
 // class PDA {
 //     public:
@@ -21,8 +32,8 @@ using namespace std;
 //         void set_states(char *states);
 //         void set_init_state(char state);
     
-//         bool process_string();
 //         void test();
+//         bool process_string();
     
 //     private:
 //         char *alphabet;
@@ -36,7 +47,6 @@ using namespace std;
         
 // };
 
-
 void PDA::set_alphabet(char* alphabet) {
     this->alphabet = alphabet;
 }
@@ -46,6 +56,17 @@ void PDA::set_productions(T_PRODUCTIONS productions) {
 }
 
 void PDA::test() {
-    cout << productions["cpp"] << "\n";
+    cout << productions[T_PAIR('c', 'p')] << "\n";
 }
 
+void PDA::set_string(std::string string) {
+    this->string = string;
+}
+
+void PDA::set_states(char *states) {
+    this->states = states;
+}
+
+void PDA::set_init_state(char state) {
+    this->current_state = state;
+}

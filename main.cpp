@@ -5,7 +5,7 @@ using namespace std;
 int main() {
 
     // Create an empty dictionary using unordered_map
-    T_DICT dict;
+    T_PRODUCTIONS dict;
 
     // Insert key-value pairs
     // dict[pair<char, char>("cpp", "1")] = "C++";
@@ -20,10 +20,10 @@ int main() {
 
     cout << "teste" << dict[T_PAIR('c', 'p')] << "\n";
 
-    // PDA pda;
+    PDA pda;
 
-    // pda.set_productions(dict);
-    // pda.test();
+    pda.set_productions(dict);
+    pda.test();
 
     return 0;
 }
