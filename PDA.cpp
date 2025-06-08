@@ -9,43 +9,6 @@
 
 using namespace std;
 
-// struct pair_hash {
-//     template <typename T1, typename T2>
-//     std::size_t operator() (const std::pair<T1, T2>& p) const {
-//         auto h1 = std::hash<T1>{}(p.first);
-//         auto h2 = std::hash<T2>{}(p.second);
-//         return h1 ^ h2;
-//     }
-// };
-
-// #define T_PRODUCTIONS std::unordered_map<std::pair<char, char>, std::string, pair_hash>
-// #define T_PAIR pair<char, char>
-
-// class PDA {
-//     public:
-//         // PDA();
-    
-//         void process();
-//         void set_alphabet(char *alphabet);
-//         void set_productions(T_PRODUCTIONS productions);
-//         void set_string(std::string string);
-//         void set_states(char *states);
-//         void set_init_state(char state);
-    
-//         void test();
-//         bool process_string();
-    
-//     private:
-//         char *alphabet;
-//         T_PRODUCTIONS productions;
-//         std::string string;
-//         std::stack<char> stack;
-//         char states;
-    
-//         bool state_is_defined(char state);
-//         bool string_is_in_alphabet(std::string string);
-        
-// };
 
 void PDA::set_alphabet(char* alphabet) {
     this->alphabet = alphabet;
@@ -56,11 +19,7 @@ void PDA::set_productions(T_PRODUCTIONS productions) {
 }
 
 void PDA::test() {
-    cout << productions[T_TUPLE('c', 'p', 'p')] << "\n";
-}
-
-void PDA::set_string(std::string string) {
-    this->string = string;
+    cout << productions[T_TUPLE('c', 'p', 'p')].first << " " << productions[T_TUPLE('c', 'p', 'p')].second << "\n";
 }
 
 void PDA::set_states(char *states) {
@@ -70,3 +29,29 @@ void PDA::set_states(char *states) {
 void PDA::set_init_state(char state) {
     this->current_state = state;
 }
+
+void PDA::set_final_states(char *final_states) {
+    this->final_states = final_states;
+}
+
+bool PDA::process_string(std::string str) {
+    T_NEXT_STATE next;
+    for (char chr: str) {
+
+        next = productions[T_TUPLE(this->current_state , chr, ' ')];
+
+        cout << "P - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+
+        // colocar na pilha o next.second
+        this->stack.push(next.second);
+
+        // atualizar estado atual
+        this->current_state = next.first;
+
+    }
+
+    // for (char chr: this->final_states) {
+    //     if (this->current_state == chr) return true;
+    // }
+    return false;
+}   

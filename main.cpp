@@ -4,26 +4,28 @@ using namespace std;
 
 int main() {
 
-    // Create an empty dictionary using unordered_map
     T_PRODUCTIONS dict;
+    string str =            "010100"; 
+    char states[] =         {'a', 'b', 'c'};
+    char final_states[] =   {'c'};
+    char alphabet[] =       {'0', '1'};
 
-    // Insert key-value pairs
-    // dict[pair<char, char>("cpp", "1")] = "C++";
-    // dict["py"] = "Python";
-    // dict["j"] = "Java";
-
-    // cout << "\nOq eu quero: " << dict["cpp"];
-    // Inserir pares chave-valor
-    dict[T_TUPLE('c', 'p', 'p')] = "C++";
-    dict[T_TUPLE('p', 'y', 't')] = "Python";
-    dict[T_TUPLE('j', 'v', 'a')] = "Java";
-
-    cout << "teste" << dict[T_TUPLE('c', 'p', 'p')] << "\n";
+    dict[T_TUPLE('a', '0', ' ')] = T_NEXT_STATE('b', 'x');
+    dict[T_TUPLE('a', '1', ' ')] = T_NEXT_STATE('a', 'x');
+    dict[T_TUPLE('b', '0', ' ')] = T_NEXT_STATE('c', 'x');
+    dict[T_TUPLE('b', '1', ' ')] = T_NEXT_STATE('a', 'x');
+    dict[T_TUPLE('c', '0', ' ')] = T_NEXT_STATE('c', 'x');
+    dict[T_TUPLE('c', '1', ' ')] = T_NEXT_STATE('a', 'x');
 
     PDA pda;
 
     pda.set_productions(dict);
-    pda.test();
+    pda.set_alphabet(alphabet);
+    pda.set_states(states);
+    pda.set_final_states(final_states);
+    pda.set_init_state('a');
+
+    pda.process_string(str);
 
     return 0;
 }
