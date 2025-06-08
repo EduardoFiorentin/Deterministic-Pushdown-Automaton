@@ -56,7 +56,7 @@ void PDA::set_productions(T_PRODUCTIONS productions) {
 }
 
 void PDA::test() {
-    cout << productions[T_PAIR('c', 'p')] << "\n";
+    cout << productions[T_TUPLE('c', 'p', 'p')] << "\n";
 }
 
 void PDA::set_string(std::string string) {

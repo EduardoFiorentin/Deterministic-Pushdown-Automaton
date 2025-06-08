@@ -14,11 +14,11 @@ int main() {
 
     // cout << "\nOq eu quero: " << dict["cpp"];
     // Inserir pares chave-valor
-    dict[T_PAIR('c', 'p')] = "C++";
-    dict[T_PAIR('p', 'y')] = "Python";
-    dict[T_PAIR('j', 'v')] = "Java";
+    dict[T_TUPLE('c', 'p', 'p')] = "C++";
+    dict[T_TUPLE('p', 'y', 't')] = "Python";
+    dict[T_TUPLE('j', 'v', 'a')] = "Java";
 
-    cout << "teste" << dict[T_PAIR('c', 'p')] << "\n";
+    cout << "teste" << dict[T_TUPLE('c', 'p', 'p')] << "\n";
 
     PDA pda;
 
