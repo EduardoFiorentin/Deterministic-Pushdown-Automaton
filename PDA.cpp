@@ -50,8 +50,10 @@ bool PDA::process_string(std::string str) {
 
     }
 
-    // for (char chr: this->final_states) {
-    //     if (this->current_state == chr) return true;
-    // }
+    cout << "Estado em que terminou: " << this->current_state << "\n";
+
+    for (int i = 0; i < (sizeof(this->final_states) / sizeof(char)); ++i)  {
+        if (this->current_state == this->final_states[i]) return true;
+    }
     return false;
 }   

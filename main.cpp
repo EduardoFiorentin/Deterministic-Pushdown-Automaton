@@ -25,7 +25,9 @@ int main() {
     pda.set_final_states(final_states);
     pda.set_init_state('a');
 
-    pda.process_string(str);
+    bool passou = pda.process_string(str);
+
+    cout << "Resultado: " << passou << "\n";
 
     return 0;
 }
