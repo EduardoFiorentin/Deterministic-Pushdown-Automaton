@@ -1,3 +1,13 @@
+/*
+ * Trabalho 2 - GEX101 - Linguagens Formais e Autômatos - 2025/1
+ *
+ * Nome:      Daniele Rohr
+ * Matricula: 2121101060
+ * 
+ * Nome:      Eduardo Fiorentin
+ * Matricula: 2211100002
+ */
+
 #ifndef PDA_H
 #define PDA_H
 

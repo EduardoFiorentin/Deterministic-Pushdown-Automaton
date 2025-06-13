@@ -1,3 +1,13 @@
+/*
+ * Trabalho 2 - GEX101 - Linguagens Formais e Autômatos - 2025/1
+ *
+ * Nome:      Daniele Rohr
+ * Matricula: 2121101060
+ * 
+ * Nome:      Eduardo Fiorentin
+ * Matricula: 2211100002
+ */
+
 #include "PDA.h"
 #include <exception>
 #include <stdexcept>
@@ -6,6 +16,8 @@
 #include <iostream>
 #include <utility> 
 #include <string>
+#include <bits/stdc++.h>
+
 
 using namespace std;
 
@@ -36,23 +48,78 @@ void PDA::set_final_states(char *final_states) {
 
 bool PDA::process_string(std::string str) {
     T_NEXT_STATE next;
-    for (char chr: str) {
+    int i = 0;
+    bool running = true;
+    while (running) {
 
-        next = productions[T_TUPLE(this->current_state , chr, ' ')];
+        //cout << "pilha: " << this->stack.size() << endl;
 
-        cout << "P - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+        if (
+            i == size(str) && 
+            !this->productions.contains(T_TUPLE(this->current_state , ' ', ' ')) &&
+            !this->productions.contains(T_TUPLE(this->current_state , ' ', this->stack.size() != 0 ? this->stack.top() : ' ' ))
+        ) {
+            break;
+        }
 
-        // colocar na pilha o next.second
-        this->stack.push(next.second);
+        // se conseguir transição sem gastar nada 
+        if (this->productions.contains(T_TUPLE(this->current_state , ' ', ' '))) {
+            next = productions[T_TUPLE(this->current_state , ' ', ' ')];
+            
+            //cout << "sem nada - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+        }
+
+        // se consegue consumir apenas string, sem usar pilha
+        else if (this->productions.contains(T_TUPLE(this->current_state , str[i], ' '))) {
+            next = productions[T_TUPLE(this->current_state , str[i], ' ')];
+    
+            //cout << "string - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+            i++;
+        } 
+
+        // se conseguir consumir apenas da pilha, sem usar string
+        else if (this->productions.contains(T_TUPLE(this->current_state , ' ', this->stack.top()))) {
+            next = productions[T_TUPLE(this->current_state , ' ', this->stack.top())];
+            this->stack.pop();
+            
+            //cout << "pilha - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+
+        }
+        
+        // se conseguir consumir string e pilha
+        else if (this->productions.contains(T_TUPLE(this->current_state , str[i], this->stack.top()))) {
+            //cout << "antes - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+            
+            next = productions[T_TUPLE(this->current_state , str[i], this->stack.top())];
+            this->stack.pop();
+            
+            //cout << "string e pilha - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
+            i++;
+        } 
+        
+        // senão - erro
+        else {
+            return false;
+        }
+
+
+        if (next.second != ' ') {
+            //cout << "colocando na pilha: " << next.second << endl;
+            this->stack.push(next.second);
+        }
 
         // atualizar estado atual
         this->current_state = next.first;
 
+
+
     }
 
-    cout << "Estado em que terminou: " << this->current_state << "\n";
+    //cout << "Estado em que terminou: " << this->current_state << "\n";
 
-    for (int i = 0; i < (sizeof(this->final_states) / sizeof(char)); ++i)  {
+    // cout << "final states" << (sizeof(this->final_states) / sizeof(char)) << endl;
+    for (int i = 0; i < (sizeof(*this->final_states) / sizeof(char)); ++i)  {
+        //cout << "Ver estados " << this->current_state    << " " << this->final_states[i] << endl;
         if (this->current_state == this->final_states[i]) return true;
     }
     return false;
