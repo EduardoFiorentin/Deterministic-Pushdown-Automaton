@@ -9,18 +9,10 @@
  */
 
 #include "PDA.h"
-#include <exception>
-#include <stdexcept>
-#include <algorithm>
-#include <string>
-#include <iostream>
-#include <utility> 
-#include <string>
 #include <bits/stdc++.h>
-
-
 using namespace std;
 
+// setters
 
 void PDA::set_alphabet(char* alphabet) {
     this->alphabet = alphabet;
@@ -30,9 +22,6 @@ void PDA::set_productions(T_PRODUCTIONS productions) {
     this->productions = productions;
 }
 
-void PDA::test() {
-    cout << productions[T_TUPLE('c', 'p', 'p')].first << " " << productions[T_TUPLE('c', 'p', 'p')].second << "\n";
-}
 
 void PDA::set_states(char *states) {
     this->states = states;
@@ -49,28 +38,28 @@ void PDA::set_final_states(char *final_states) {
 bool PDA::process_string(std::string str) {
     T_NEXT_STATE next;
     int i = 0;
-    bool running = true;
-    while (running) {
+    while (true) {
 
         //cout << "pilha: " << this->stack.size() << endl;
 
         if (
+            // a string chegou no fim E não existe mais nenhuma transição possível
             i == size(str) && 
-            !this->productions.contains(T_TUPLE(this->current_state , ' ', ' ')) &&
-            !this->productions.contains(T_TUPLE(this->current_state , ' ', this->stack.size() != 0 ? this->stack.top() : ' ' ))
-        ) {
-            break;
-        }
+            this->productions.find(T_TUPLE(this->current_state , ' ', ' ')) == this->productions.end() &&
+            this->productions.find(T_TUPLE(this->current_state , ' ', this->stack.size() != 0 ? this->stack.top() : ' ' )) == this->productions.end()
+            ) {
+                break;
+            }
 
         // se conseguir transição sem gastar nada 
-        if (this->productions.contains(T_TUPLE(this->current_state , ' ', ' '))) {
+        if (this->productions.find(T_TUPLE(this->current_state , ' ', ' ')) != this->productions.end()) {
             next = productions[T_TUPLE(this->current_state , ' ', ' ')];
             
             //cout << "sem nada - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
         }
 
         // se consegue consumir apenas string, sem usar pilha
-        else if (this->productions.contains(T_TUPLE(this->current_state , str[i], ' '))) {
+        else if (this->productions.find(T_TUPLE(this->current_state , str[i], ' ')) != this->productions.end()) {
             next = productions[T_TUPLE(this->current_state , str[i], ' ')];
     
             //cout << "string - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
@@ -78,7 +67,7 @@ bool PDA::process_string(std::string str) {
         } 
 
         // se conseguir consumir apenas da pilha, sem usar string
-        else if (this->productions.contains(T_TUPLE(this->current_state , ' ', this->stack.top()))) {
+        else if (this->productions.find(T_TUPLE(this->current_state , ' ', this->stack.top())) != this->productions.end()) {
             next = productions[T_TUPLE(this->current_state , ' ', this->stack.top())];
             this->stack.pop();
             
@@ -87,7 +76,7 @@ bool PDA::process_string(std::string str) {
         }
         
         // se conseguir consumir string e pilha
-        else if (this->productions.contains(T_TUPLE(this->current_state , str[i], this->stack.top()))) {
+        else if (this->productions.find(T_TUPLE(this->current_state , str[i], this->stack.top())) != this->productions.end()) {
             //cout << "antes - " << this->current_state << " - " << next.first << " - " << next.second << "\n";
             
             next = productions[T_TUPLE(this->current_state , str[i], this->stack.top())];
@@ -110,7 +99,6 @@ bool PDA::process_string(std::string str) {
 
         // atualizar estado atual
         this->current_state = next.first;
-
 
 
     }

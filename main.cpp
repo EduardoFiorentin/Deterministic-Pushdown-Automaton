@@ -8,7 +8,6 @@
  * Matricula: 2211100002
  */
 
-
 #include <bits/stdc++.h>
 #include "PDA.h"
 using namespace std;
@@ -19,7 +18,7 @@ int main() {
     string w;
     char states[] =         {'a', 'b', 'c', 'd', 'e'};
     char final_states[] =   {'e'};
-    char alphabet[] =       {'#', 'A', 'T'};
+    char alphabet[] =       {'#', 'A', 'T', 'C', 'G'};
 
     // T_TUPLE(est_atual, string, leitura_pilha)
     // T_NEXT(prox_estado, grava_pilha)
